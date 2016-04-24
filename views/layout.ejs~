@@ -24,7 +24,14 @@
    <nav class="main" role="navigation">
     <a href="/">Inicio</a>
     <a href="/question">Preguntas</a>
+    <a href="/creditos">Creditos</a>
    </nav>
+
+   <section>
+    <div>
+     <%- body %>
+    </div>
+   </section>
 
    <footer class="main">
     <a href="http://es.wikipedia.org/wiki/Quiz">
