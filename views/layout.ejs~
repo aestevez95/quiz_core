@@ -24,7 +24,7 @@
    <nav class="main" role="navigation">
     <a href="/">Inicio</a>
     <a href="/question">Preguntas</a>
-    <a href="/creditos">Creditos</a>
+    <a href="/author">Creditos</a>
    </nav>
 
    <section>
