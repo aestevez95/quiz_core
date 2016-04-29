@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
+    "reset_heroku": "heroku pg:reset DATABASE"
   },
   "engines": {
     "node": "4.4.0",
