@@ -1,7 +1,7 @@
  { margin: 0; padding: 0; }
 
 body { 	font: 16px Georgia, serif;
- 	color: white;
+ 	color: black;
      }
 
 .page { margin: 2% auto;
