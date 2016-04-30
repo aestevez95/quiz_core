@@ -42,7 +42,7 @@ exports.show = function(req, res, next) {
 // GET /quizzes/:id/check
 exports.check = function(req, res) {
 	var answer = req.query.answer || "";
-	var result = answer === req.quiz.answer ? 'Correcta' : 'Incorrecta';
+	var result = answer === req.quiz.answer ? 'correcta' : 'incorrecta';
 	res.render('quizzes/result', { quiz: req.quiz, 
 				       result: result, 
 				       answer: answer });	

@@ -20,6 +20,8 @@ router.get('/quizzes/new', 			quizController.new);
 router.post('/quizzes', 			quizController.create); // Crear nuevo quiz (post)
 router.get('/quizzes/:quizId(\\d+)/edit', 	quizController.edit);
 router.put('/quizzes/:quizId(\\d+)', 		quizController.update); // Actualizar un quiz (put)
+router.delete('/quizzes/:quizId(\\d+)', 	quizController.destroy);
+
 
 //Definición de ruta de author
 router.get('/author', 				quizController.author);
