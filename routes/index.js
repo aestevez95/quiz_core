@@ -13,14 +13,14 @@ router.param('quizId', quizController.load); // autoload :quizId
 
 
 // Definición de rutas de /quizzes 
-router.get('/quizzes', 				quizController.index);
+router.get('/quizzes', 				quizController.index); // Servir página con listado de preguntas y atender a peticiones de búsqueda
 router.get('/quizzes/:quizId(\\d+)', 		quizController.show);
 router.get('/quizzes/:quizId(\\d+)/check', 	quizController.check);
 router.get('/quizzes/new', 			quizController.new);
 router.post('/quizzes', 			quizController.create); // Crear nuevo quiz (post)
 router.get('/quizzes/:quizId(\\d+)/edit', 	quizController.edit);
 router.put('/quizzes/:quizId(\\d+)', 		quizController.update); // Actualizar un quiz (put)
-router.delete('/quizzes/:quizId(\\d+)', 	quizController.destroy);
+router.delete('/quizzes/:quizId(\\d+)', 	quizController.destroy); // Borrar un quiz (delete)
 
 
 //Definición de ruta de author

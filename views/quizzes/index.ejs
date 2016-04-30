@@ -1,3 +1,15 @@
+<form method="get" action="/quizzes" >      
+   Buscar en preguntas:
+   <input type="text" name="search" placeholder="Introduzca texto a buscar"/> <p>
+   <input type="submit" value="Buscar">
+</form>
+
+<% if (resultado) { %>
+      <p>
+	Resultado de la búsqueda:
+      </p>
+<% } %>
+
 <table>
   <% for (var i in quizzes) { %>        
      <tr>

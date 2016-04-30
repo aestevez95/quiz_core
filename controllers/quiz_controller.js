@@ -19,15 +19,28 @@ exports.load = function(req, res, next, quizId) {
 };
 
 
-// GET /quizzes
+// GET /quizzes 
 exports.index = function(req, res, next) {
-	models.Quiz.findAll()
-		.then(function(quizzes) {
-			res.render('quizzes/index.ejs', { quizzes: quizzes});
-		})
-		.catch(function(error) {
-			next(error);
-		});
+	var searchText = req.query.search;
+	if(!searchText) { // Decidir si buscar texto o simplemente servir listado completo de preguntas
+		models.Quiz.findAll()
+			.then(function(quizzes) {
+				res.render('quizzes/index.ejs', { quizzes: quizzes, resultado: false});
+			})
+			.catch(function(error) {
+				next(error);
+			});
+	} else {
+		searchText = '%' + searchText + '%'; // Delimitamos con % por delante y por detrás
+		searchText = searchText.replace(/\s/g, '%'); // Cambiamos espacios en blanco por %		
+		models.Quiz.findAll({where: ["question like ?", searchText]})
+			.then(function(quizzes) {
+				res.render('quizzes/index.ejs', { quizzes: quizzes, resultado: true});
+			})
+			.catch(function(error) {
+				next(error);
+			});
+	}
 };
 
 
@@ -119,11 +132,11 @@ exports.destroy = function(req, res, next) {
   req.quiz.destroy()
     .then( function() {
 	  req.flash('success', 'Quiz borrado con éxito.');
-      res.redirect('/quizzes');
+      	  res.redirect('/quizzes');
     })
     .catch(function(error){
-	  req.flash('error', 'Error al editar el Quiz: '+error.message);
-      next(error);
+	  req.flash('error', 'Error al editar el Quiz: ' + error.message);
+      	  next(error);
     });
 };
 
