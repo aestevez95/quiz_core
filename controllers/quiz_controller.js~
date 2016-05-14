@@ -4,7 +4,7 @@ var Sequelize = require('sequelize');
 
 // Autoload el quiz asociado a :quizId
 exports.load = function(req, res, next, quizId) {
-	models.Quiz.findById(quizId)
+	models.Quiz.findById(quizId, { include: [ models.Comment ] })
 		.then(function(quiz) {
 			if (quiz) {
 				req.quiz = quiz;
@@ -71,6 +71,8 @@ exports.new = function(req, res, next) {
 
 // POST /quizzes/create
 exports.create = function(req, res, next) {
+	var authorId = req.session.user && req.session.user.id || 0;
+
 	var quiz = models.Quiz.build({ question: req.body.quiz.question, 
   	                               answer:   req.body.quiz.answer} );
 
