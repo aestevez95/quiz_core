@@ -11,17 +11,17 @@ router.get('/', function(req, res, next) {
 });
 
 // Autoload de parámetros
-router.param('quizId', quizController.load); // autoload :quizId
-router.param('userId', userController.load); // autoload :quizId
+router.param('quizId', 				quizController.load); // autoload :quizId
+router.param('userId', 				userController.load); // autoload :quizId
 
 // Definición de rutas de /users
-router.get('/users', userController.index); // listado usuarios
-router.get('/users/:userId(\\d+)', userController.show); // ver un usuario
-router.get('/users/new', userController.new); // formulario sign in
-router.post('/users', userController.create); // registrar usuario
-router.get('/users/:userId(\\d+)/edit', userController.edit); // editar información de cuenta
-router.put('/users/:userId(\\d+)', userController.update); // actualizar información de cuenta
-router.delete('/users/:userId(\\d+)', userController.destroy); // borrar cuenta
+router.get('/users', 				userController.index); // listado usuarios
+router.get('/users/:userId(\\d+)', 		userController.show); // ver un usuario
+router.get('/users/new', 			userController.new); // formulario sign in
+router.post('/users', 				userController.create); // registrar usuario
+router.get('/users/:userId(\\d+)/edit', 	userController.edit); // editar información de cuenta
+router.put('/users/:userId(\\d+)', 		userController.update); // actualizar información de cuenta
+router.delete('/users/:userId(\\d+)', 		userController.destroy); // borrar cuenta
 
 // Definición de rutas de /quizzes 
 router.get('/quizzes', 				quizController.index); // Servir página con listado de preguntas y atender a peticiones de búsqueda
@@ -38,7 +38,7 @@ router.post('/quizzes/:quizId(\\d+)/comments',    commentController.create);
 
 
 //Definición de ruta de author
-router.get('/author', 				  quizController.author);
+router.get('/author', 				quizController.author);
 
 
 module.exports = router;

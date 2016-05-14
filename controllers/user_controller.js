@@ -1,3 +1,4 @@
+
 var models = require('../models');
 var Sequelize = require('sequelize');
 
@@ -11,7 +12,7 @@ exports.load = function(req, res, next, userId) {
                 next();
             } else {
                 req.flash('error', 'No existe el usuario con id='+id+'.');
-                next(new Error('No existe userId=' + userId));
+                throw new Error('No existe userId=' + userId);
             }
         })
         .catch(function(error) { next(error); });
@@ -61,7 +62,7 @@ exports.create = function(req, res, next) {
                 return user.save({fields: ["username", "password", "salt"]})
                     .then(function(user) { // Renderizar pagina de usuarios
                         req.flash('success', 'Usuario creado con éxito.');
-                        res.redirect('/users');
+                        res.redirect('/session'); // Redireccion a pagina de login
                     })
                     .catch(Sequelize.ValidationError, function(error) {
                         req.flash('error', 'Errores en el formulario:');
@@ -87,13 +88,19 @@ exports.edit = function(req, res, next) {
 // PUT /users/:id
 exports.update = function(req, res, next) {
 
-    req.user.username  = req.body.user.username;
+    // req.user.username  = req.body.user.username; // No se permite su edicion
     req.user.password  = req.body.user.password;
 
-    req.user.save({fields: ["username", "password", "salt"]})
+    // El password no puede estar vacio
+    if ( ! req.body.user.password) { 
+        req.flash('error', "El campo Password debe rellenarse.");
+        return res.render('users/edit', {user: req.user});
+    }
+
+    req.user.save({fields: ["password", "salt"]})
         .then(function(user) {
             req.flash('success', 'Usuario actualizado con éxito.');
-            res.redirect('/users');  // Redirección HTTP a /users
+            res.redirect('/users');  // Redirección HTTP a /
         })
         .catch(Sequelize.ValidationError, function(error) {
 
@@ -114,11 +121,19 @@ exports.update = function(req, res, next) {
 exports.destroy = function(req, res, next) {
     req.user.destroy()
         .then(function() {
+
+            // Borrando usuario logeado.
+            if (req.session.user && req.session.user.id === req.user.id) {
+                // borra la sesión y redirige a /
+                delete req.session.user;
+            }
+
             req.flash('success', 'Usuario eliminado con éxito.');
-            res.redirect('/users');
+            res.redirect('/');
         })
         .catch(function(error){ 
             next(error); 
         });
 };
+
 
