@@ -32,8 +32,7 @@ exports.index = function(req, res, next) {
 			});
 	} else {
 		searchText = '%' + searchText + '%'; // Delimitamos con % por delante y por detrás
-		searchText = searchText.replace(/\s/g, '%'); // Cambiamos espacios en blanco por %
-		console.log('Se buscará el texto:' + searchText);		
+		searchText = searchText.replace(/\s/g, '%'); // Cambiamos espacios en blanco por %		
 		models.Quiz.findAll({where: ["question like ?", searchText]})
 			.then(function(quizzes) {
 				res.render('quizzes/index.ejs', { quizzes: quizzes, resultado: true});
