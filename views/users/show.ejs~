@@ -1,7 +1,7 @@
 <h2>Usuario</h2>
 
 <p>
-  <b>Username:</b>
+  <b>Nombre de usuario:</b>
   <%= user.username %>
 </p>
 

@@ -2,6 +2,27 @@ var models = require('../models');
 var Sequelize = require('sequelize');
 var url = require('url');
 
+
+// Middleware: Se requiere hacer login.
+//
+// Si el usuario ya hizo login anteriormente entonces existira 
+// el objeto user en req.session, por lo que continuo con los demas 
+// middlewares o rutas.
+// Si no existe req.session.user, entonces es que aun no he hecho 
+// login, por lo que me redireccionan a una pantalla de login. 
+// Guardo en redir cual es mi url para volver automaticamente a 
+// esa url despues de hacer login; pero si redir ya existe entonces
+// conservo su valor.
+// 
+exports.loginRequired = function (req, res, next) {
+    if (req.session.user) {
+        next();
+    } else {
+        res.redirect('/session?redir=' + (req.param('redir') || req.url));
+    }
+};
+
+
 /*
  * Autenticar un usuario: Comprueba si el usuario esta registrado en users
  *
@@ -20,7 +41,6 @@ var authenticate = function(login, password) {
             }
         });
 }; 
-
 
 
 // GET /session   -- Formulario de login
@@ -73,4 +93,6 @@ exports.destroy = function(req, res, next) {
     
     res.redirect("/session"); // redirect a login
 };
+
+
 

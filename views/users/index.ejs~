@@ -7,8 +7,8 @@
 <table>
   <thead>
     <tr>
-      <th>Username</th>
-      <th>Administrador</th>
+      <th>Nombre de usuario:</th>
+      <th>Administrador:</th>
       <th></th>
     </tr>
   </thead>

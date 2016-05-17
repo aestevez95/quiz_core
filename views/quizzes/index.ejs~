@@ -4,21 +4,30 @@
    <input type="submit" value="Buscar">
 </form>
 
+<% if (resultado) { %>
+      <p>
+	Resultado de la búsqueda:
+      </p>
+<% } %>
+
 <table>
   <% for (var i in quizzes) { %>        
      <tr>
         <td>
            <a href="/quizzes/<%= quizzes[i].id %>"><%= quizzes[i].question %></a>
         </td>
-	<td>
-	   <a href="/quizzes/<%= quizzes[i].id %>/edit"><button>editar</button></a>
- 	</td>
-	<td>
-           <a href="/quizzes/<%= quizzes[i].id %>?_method=DELETE" 
-              onClick="return confirm('Borrar: <%= quizzes[i].question %>');">
-              <button>borrar</button>
-           </a>
-        </td>
+	<% if (session.user) { %>
+          <td>
+             <a href="/quizzes/<%= quizzes[i].id %>/edit"><button>editar</button></a>
+          </td>
+          <td>
+             <a href="/quizzes/<%= quizzes[i].id %>?_method=DELETE" 
+                onClick="return confirm('Borrar: <%= quizzes[i].question %>');">
+                <button>borrar</button>
+             </a>
+          </td>
+        <% } %>
+
      </tr> 
   <% } %>
 </table>

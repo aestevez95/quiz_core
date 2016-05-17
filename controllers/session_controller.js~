@@ -1,4 +1,3 @@
-
 var models = require('../models');
 var Sequelize = require('sequelize');
 var url = require('url');
