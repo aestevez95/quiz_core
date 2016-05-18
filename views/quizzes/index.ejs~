@@ -32,4 +32,6 @@
   <% } %>
 </table>
 
-<a href="/quizzes/new"><button type="button">Crear pregunta</button></a>
+<% if (session.user) { %>
+  <a href="/quizzes/new"><button type="button">Crear pregunta</button></a>
+<% } %>
