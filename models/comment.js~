@@ -1,4 +1,3 @@
-
 // Definicion del modelo Comments:
 
 module.exports = function(sequelize, DataTypes) {
