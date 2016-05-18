@@ -13,8 +13,9 @@ router.get('/', function(req, res, next) {
 
 // Autoload de parámetros
 router.param('quizId', 				quizController.load); // autoload :quizId
-router.param('userId', 				userController.load); // autoload :quizId
+router.param('userId', 				userController.load); // autoload :userId
 router.param('commentId', 			commentController.load);  // autoload :commentId
+router.param('format',				quizController.loadFormat); // autoload :format
 
 // Definición de rutas de sesión
 router.get('/session', 				sessionController.new); // formulario login
@@ -37,8 +38,8 @@ router.delete('/users/:userId(\\d+)', 		sessionController.loginRequired,
 						userController.destroy); // borrar cuenta
 
 // Definición de rutas de /quizzes 
-router.get('/quizzes', 				quizController.index); // Servir página con listado de preguntas y atender a peticiones de búsqueda
-router.get('/quizzes/:quizId(\\d+)', 		quizController.show);
+router.get('/quizzes.:format?',			quizController.index); // Servir página con listado de preguntas y atender a peticiones de búsqueda
+router.get('/quizzes/:quizId(\\d+).:format?',	quizController.show);			
 router.get('/quizzes/:quizId(\\d+)/check', 	quizController.check);
 router.get('/quizzes/new', 			sessionController.loginRequired, quizController.new);
 router.post('/quizzes', 			sessionController.loginRequired, quizController.create); // Crear nuevo quiz (post)

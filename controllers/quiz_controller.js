@@ -19,6 +19,13 @@ exports.load = function(req, res, next, quizId) {
 };
 
 
+// Autoload del formato. Pasado como :format?
+exports.loadFormat = function(req, res, next, format) {
+	req.format = format;
+	next();
+};
+
+
 // MW que permite acciones solamente si al usuario logeado es admin o es el autor del quiz.
 exports.ownershipRequired = function(req, res, next){
 
@@ -41,7 +48,11 @@ exports.index = function(req, res, next) {
 	if(!searchText) { // Decidir si buscar texto o simplemente servir listado completo de preguntas
 		models.Quiz.findAll()
 			.then(function(quizzes) {
-				res.render('quizzes/index.ejs', { quizzes: quizzes, resultado: false});
+				if(req.format === 'json') { 							// Comprobamos si es una petición de formato json
+				   res.render('quizzes/indexJson.ejs', {quizzes: quizzes}); 			// Si es json
+				} else {
+				    res.render('quizzes/index.ejs', { quizzes: quizzes, resultado: false}); 	// Si es http o cualquier otro formato...
+				}
 			})
 			.catch(function(error) {
 				next(error);
@@ -51,7 +62,11 @@ exports.index = function(req, res, next) {
 		searchText = searchText.replace(/\s/g, '%'); // Cambiamos espacios en blanco por %		
 		models.Quiz.findAll({where: ["question like ?", searchText]})
 			.then(function(quizzes) {
-				res.render('quizzes/index.ejs', { quizzes: quizzes, resultado: true});
+				if(req.format === 'json') { 							// Comprobamos si es una petición de formato json
+				   res.render('quizzes/indexJson.ejs', {quizzes: quizzes}); 			// Si es json
+				} else {
+				   res.render('quizzes/index.ejs', { quizzes: quizzes, resultado: true}); 	// Si es http o cualquier otro formato...
+				}				
 			})
 			.catch(function(error) {
 				next(error);
@@ -62,9 +77,13 @@ exports.index = function(req, res, next) {
 
 // GET /quizzes/:id
 exports.show = function(req, res, next) {
-	var answer = req.query.answer || '';
-	res.render('quizzes/show', { quiz:   req.quiz,
-	        		     answer: answer});
+	if(req.format === 'json') {
+	   res.render('quizzes/showJson.ejs', { quiz: req.quiz });
+	} else {
+	   var answer = req.query.answer || '';
+	   res.render('quizzes/show', { quiz:   req.quiz,
+	        		        answer: answer});
+	}
 };
 
 
