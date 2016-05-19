@@ -49,9 +49,13 @@ exports.index = function(req, res, next) {
 		models.Quiz.findAll()
 			.then(function(quizzes) {
 				if(req.format === 'json') { 							// Comprobamos si es una petición de formato json
-				   res.render('quizzes/indexJson.ejs', {quizzes: quizzes}); 			// Si es json
+				   var string = '';								// Si es Json
+				   for (var i in quizzes) {
+				      string = string + JSON.stringify(quizzes[i]);
+				   }
+				   res.send(string);								
 				} else {
-				    res.render('quizzes/index.ejs', { quizzes: quizzes, resultado: false}); 	// Si es http o cualquier otro formato...
+				   res.render('quizzes/index.ejs', { quizzes: quizzes, resultado: false}); 	// Si es http o cualquier otro formato...
 				}
 			})
 			.catch(function(error) {
@@ -63,7 +67,11 @@ exports.index = function(req, res, next) {
 		models.Quiz.findAll({where: ["question like ?", searchText]})
 			.then(function(quizzes) {
 				if(req.format === 'json') { 							// Comprobamos si es una petición de formato json
-				   res.render('quizzes/indexJson.ejs', {quizzes: quizzes}); 			// Si es json
+				   var string = '';								// Si es Json
+				   for (var i in quizzes) {
+				      string = string + JSON.stringify(quizzes[i]);
+				   }
+				   res.send(string);	
 				} else {
 				   res.render('quizzes/index.ejs', { quizzes: quizzes, resultado: true}); 	// Si es http o cualquier otro formato...
 				}				
@@ -78,7 +86,7 @@ exports.index = function(req, res, next) {
 // GET /quizzes/:id
 exports.show = function(req, res, next) {
 	if(req.format === 'json') {
-	   res.render('quizzes/showJson.ejs', { quiz: req.quiz });
+	   res.send(JSON.stringify(req.quiz));
 	} else {
 	   var answer = req.query.answer || '';
 	   res.render('quizzes/show', { quiz:   req.quiz,
