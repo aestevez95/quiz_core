@@ -254,6 +254,31 @@ exports.author = function (req, res, next) {
 }
 
 
+// FUNCIONES AUXILIARES
+
+/**
+ * Crea una promesa para crear un attachment en la tabla Attachments.
+ */
+function createAttachment(req, uploadResult, quiz) {
+    if (!uploadResult) {
+        return Promise.resolve();
+    }
+
+    return models.Attachment.create({ public_id: uploadResult.public_id,
+                                      url: uploadResult.url,
+                                      filename: req.file.originalname,
+                                      mime: req.file.mimetype,
+                                      QuizId: quiz.id })
+    .then(function(attachment) {
+        req.flash('success', 'Imagen nueva guardada con éxito.');
+    })
+    .catch(function(error) { // Ignoro errores de validacion en imagenes
+        req.flash('error', 'No se ha podido salvar la nueva imagen: '+error.message);
+        cloudinary.api.delete_resources(uploadResult.public_id);
+    });
+}
+
+
 /**
  * Crea una promesa para actualizar un attachment en la tabla Attachments.
  */
