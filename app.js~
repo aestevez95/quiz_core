@@ -65,7 +65,7 @@ app.use(function(req, res, next) {
       next();
 
    } else if (req.session.user && (req.session.user.expires > Date.now())) { // Si hay un usuario logeado y su tiempo no ha expirado aún
-      req.session.user.expires = (Date.now() + 2000000);
+      req.session.user.expires = (Date.now() + 120000);
       next();
 
    } else { // Otro caso

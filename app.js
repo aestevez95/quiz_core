@@ -54,7 +54,7 @@ app.use(function(req, res, next) {
 });
 
 
-// Actualizar contador timeout										//CAMBIOS. justo antes del último paso => routes
+// Actualizar contador timeout
 app.use(function(req, res, next) {
 
    if(!req.session.user) { // Si no hay usuario logeado
