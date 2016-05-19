@@ -16,6 +16,7 @@ router.param('quizId', 				quizController.load); // autoload :quizId
 router.param('userId', 				userController.load); // autoload :quizId
 router.param('commentId', 			commentController.load);  // autoload :commentId
 
+
 // Definición de rutas de sesión
 router.get('/session', 				sessionController.new); // formulario login
 router.post('/session', 			sessionController.create); // crear sesión

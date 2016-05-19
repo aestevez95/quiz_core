@@ -43,6 +43,7 @@ if (app.get('env') === 'production') {
     });
 }
 
+
 // Helper dinamico:
 app.use(function(req, res, next) {
 
@@ -51,6 +52,28 @@ app.use(function(req, res, next) {
 
    next();
 });
+
+
+// Actualizar contador timeout										//CAMBIOS. justo antes del último paso => routes
+app.use(function(req, res, next) {
+
+   if(!req.session.user) { // Si no hay usuario logeado
+      next();
+
+   } else if(req.session.user && (req.session.user.expires < Date.now())) { // Si hay un usuario logeado cuyo tiempo ha expirado
+      delete req.session.user;
+      next();
+
+   } else if (req.session.user && (req.session.user.expires > Date.now())) { // Si hay un usuario logeado y su tiempo no ha expirado aún
+      req.session.user.expires = (Date.now() + 120000);
+      next();
+
+   } else { // Otro caso
+      next();
+   }
+
+});
+
 
 app.use('/', routes);
 
@@ -87,3 +110,4 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+
