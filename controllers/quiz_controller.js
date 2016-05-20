@@ -92,12 +92,44 @@ exports.index = function(req, res, next) {
 
 // GET /quizzes/:id
 exports.show = function(req, res, next) {
-	if(req.format === 'json') {
-	   res.send(JSON.stringify(req.quiz));
-	} else {
-	   var answer = req.query.answer || '';
-	   res.render('quizzes/show', { quiz:   req.quiz,
-	        		        answer: answer});
+	var tareasTotales = 0; // El for va creando promesas; almacenamos cuantas crea.
+	var array;	
+	var y1 = 0;
+	var y2 = 0;
+	
+	// Añadimos a cada comentario el username asociado al authorId que lo creó
+	for (var i in req.quiz.Comments) {
+		array[y1++] = i;		
+		
+		models.User.findById(req.quiz.Comments[i].AuthorId)
+		   .then(function(user) {
+		 	if (user) {
+				var z = array[y2++];
+				req.quiz.Comments[z].authorName = user.username; // Almacenamos el username en 'authorName'
+				tareaTerminada(); // Avisamos de que se ha terminado una de las promesas
+			}
+		})
+		.catch(function(error) { 
+			next(error); 
+		});	
+
+		tareasTotales++;
+	}
+
+	var tareasTerminadas = 0; // Vamos almacenando cuantas tareas han terminado
+
+	function tareaTerminada() {
+		tareasTerminadas++;
+	
+		if(tareasTerminadas === tareasTotales) { // Cuando se hayan preparado todos los comentarios, renderizamos
+			if(req.format === 'json') { 
+			   res.send(JSON.stringify(req.quiz));
+			} else {
+			   var answer = req.query.answer || '';
+			   res.render('quizzes/show', { quiz:   req.quiz,
+							answer: answer});
+			}
+		}
 	}
 };
 
