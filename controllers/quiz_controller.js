@@ -129,7 +129,7 @@ exports.create = function(req, res, next) {
 	var authorId = req.session.user && req.session.user.id || 0;
 	var quiz = models.Quiz.build({ question: req.body.quiz.question, 
   	                               answer:   req.body.quiz.answer,
-				       AuthorId: authorId } );
+				       AuthorId: authorId });
 
 	// guarda en BD los campos pregunta y respuesta de quiz
 	quiz.save({fields: ["question", "answer", "AuthorId"]})

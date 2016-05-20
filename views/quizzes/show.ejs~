@@ -7,7 +7,7 @@
     <% if (quiz.Attachment) { %>
       <img src="<%= quiz.Attachment.url %>" />
     <% } else { %> 
-      <img src="/imgs/question.png" width="50px" />
+      <img src="/images/question.png" width="50px" />
     <% } %> 
 
     <p>
@@ -29,12 +29,12 @@
        var comment = quiz.Comments[i];
        if (comment.accepted) { %>
 
-           <li> <%= comment.text %> </li>
+           <li> <%= comment.text %>              (Autor: <%= comment.AuthorId %>) </li>
 
        <% } else if (session.user && 
                      (session.user.isAdmin || (quiz.AuthorId === session.user.id))) { %>
 
-           <li> <%= comment.text %> </li>
+           <li> <%= comment.text %>              (Autor: <%= comment.AuthorId %>) </li>
 
            <a href="/quizzes/<%= quiz.id %>/comments/<%= comment.id %>/accept?_method=PUT">
               <button>Aceptar</button>
