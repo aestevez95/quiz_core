@@ -93,18 +93,20 @@ exports.index = function(req, res, next) {
 // GET /quizzes/:id
 exports.show = function(req, res, next) {
 	var tareasTotales = 0; // El for va creando promesas; almacenamos cuantas crea.
-	var array;	
-	var y1 = 0;
-	var y2 = 0;
+	
+	var array = {}; // Variables para trabajar con procesos asíncronos	
+	var y1 = 1;
+	var y2 = 1;
 	
 	// Añadimos a cada comentario el username asociado al authorId que lo creó
 	for (var i in req.quiz.Comments) {
-		array[y1++] = i;		
+		array[y1++] = i; // Contador externo		
 		
 		models.User.findById(req.quiz.Comments[i].AuthorId)
 		   .then(function(user) {
 		 	if (user) {
-				var z = array[y2++];
+				var z = array[y2++]; // Contador interno
+				
 				req.quiz.Comments[z].authorName = user.username; // Almacenamos el username en 'authorName'
 				tareaTerminada(); // Avisamos de que se ha terminado una de las promesas
 			}

@@ -93,9 +93,9 @@ exports.index = function(req, res, next) {
 // GET /quizzes/:id
 exports.show = function(req, res, next) {
 	var tareasTotales = 0; // El for va creando promesas; almacenamos cuantas crea.
-	var array;	
-	var y1 = 0;
-	var y2 = 0;
+	var array = {};	
+	var y1 = 1;
+	var y2 = 1;
 	
 	// Añadimos a cada comentario el username asociado al authorId que lo creó
 	for (var i in req.quiz.Comments) {
