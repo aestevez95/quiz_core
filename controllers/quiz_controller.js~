@@ -71,7 +71,7 @@ exports.index = function(req, res, next) {
 	} else {
 		searchText = '%' + searchText + '%'; // Delimitamos con % por delante y por detrás
 		searchText = searchText.replace(/\s/g, '%'); // Cambiamos espacios en blanco por %		
-		models.Quiz.findAll({where: ["question like ?", searchText]})
+		models.Quiz.findAll({where: ["question like ?", searchText], include: [ models.Attachment ]})
 			.then(function(quizzes) {
 				if(req.format === 'json') { 							// Comprobamos si es una petición de formato json
 				   var string = '';								// Si es Json
@@ -251,6 +251,31 @@ exports.destroy = function(req, res, next) {
 // GET /creditos
 exports.author = function (req, res, next) {
 	res.render('author');
+}
+
+
+// FUNCIONES AUXILIARES
+
+/**
+ * Crea una promesa para crear un attachment en la tabla Attachments.
+ */
+function createAttachment(req, uploadResult, quiz) {
+    if (!uploadResult) {
+        return Promise.resolve();
+    }
+
+    return models.Attachment.create({ public_id: uploadResult.public_id,
+                                      url: uploadResult.url,
+                                      filename: req.file.originalname,
+                                      mime: req.file.mimetype,
+                                      QuizId: quiz.id })
+    .then(function(attachment) {
+        req.flash('success', 'Imagen nueva guardada con éxito.');
+    })
+    .catch(function(error) { // Ignoro errores de validacion en imagenes
+        req.flash('error', 'No se ha podido salvar la nueva imagen: '+error.message);
+        cloudinary.api.delete_resources(uploadResult.public_id);
+    });
 }
 
 

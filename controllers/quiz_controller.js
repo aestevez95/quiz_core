@@ -55,14 +55,14 @@ exports.index = function(req, res, next) {
 	if(!searchText) { // Decidir si buscar texto o simplemente servir listado completo de preguntas
 		models.Quiz.findAll({ include: [ models.Attachment ] })
 			.then(function(quizzes) {
-				if(req.format === 'json') { 							// Comprobamos si es una petición de formato json
-				   var string = '';								// Si es Json
+				if(req.format === 'json') { 			// Comprobamos si es una petición de formato json
+				   var string = '';				// Si es Json
 				   for (var i in quizzes) {
 				      string = string + JSON.stringify(quizzes[i]);
 				   }
 				   res.send(string);								
-				} else {
-				   res.render('quizzes/index.ejs', { quizzes: quizzes, resultado: false}); 	// Si es http o cualquier otro formato...
+				} else {                                        // Si es http o cualquier otro formato...
+				   res.render('quizzes/index.ejs', { quizzes: quizzes, resultado: false}); 	
 				}
 			})
 			.catch(function(error) {
@@ -71,16 +71,16 @@ exports.index = function(req, res, next) {
 	} else {
 		searchText = '%' + searchText + '%'; // Delimitamos con % por delante y por detrás
 		searchText = searchText.replace(/\s/g, '%'); // Cambiamos espacios en blanco por %		
-		models.Quiz.findAll({where: ["question like ?", searchText]})
+		models.Quiz.findAll({where: ["question like ?", searchText], include: [ models.Attachment ]})
 			.then(function(quizzes) {
-				if(req.format === 'json') { 							// Comprobamos si es una petición de formato json
-				   var string = '';								// Si es Json
+				if(req.format === 'json') { 			// Comprobamos si es una petición de formato json
+				   var string = '';				// Si es Json
 				   for (var i in quizzes) {
 				      string = string + JSON.stringify(quizzes[i]);
 				   }
 				   res.send(string);	
-				} else {
-				   res.render('quizzes/index.ejs', { quizzes: quizzes, resultado: true}); 	// Si es http o cualquier otro formato...
+				} else {					// Si es http o cualquier otro formato...
+				   res.render('quizzes/index.ejs', { quizzes: quizzes, resultado: true});
 				}				
 			})
 			.catch(function(error) {
