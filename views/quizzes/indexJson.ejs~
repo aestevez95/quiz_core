@@ -1,5 +1,0 @@
-<% for (var i in quizzes) { %>        
-	
-	<%= JSON.stringify(quizzes[i]) %>
-
-<% } %>

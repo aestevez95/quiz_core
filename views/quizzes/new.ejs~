@@ -1,9 +1,0 @@
-<p>
-  Añadir pregunta:
-</p>
-
-<p>
-   <form method="post" action="/quizzes" >
-	     <% include _form.ejs %>
-   </form>
-</p>
