@@ -43,8 +43,8 @@ router.delete('/users/:userId(\\d+)', 		sessionController.loginRequired,
 
 // Definición de rutas de /quizzes 
 router.get('/quizzes.:format?',			quizController.index); // Servir página con listado de preguntas y atender a peticiones de búsqueda
-router.get('/quizzes/:quizId(\\d+).:format?',	quizController.show);			
-router.get('/quizzes/:quizId(\\d+)/check', 	quizController.check);
+router.get('/quizzes/:quizId(\\d+).:format?',	quizController.show);	
+router.get('/quizzes/:quizId(\\d+)/check', 	quizController.check);					
 router.get('/quizzes/new', 			sessionController.loginRequired, quizController.new);
 router.post('/quizzes', 			sessionController.loginRequired, 
 						upload.single('image'),				

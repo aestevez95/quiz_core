@@ -11,7 +11,10 @@ var cloudinary_image_options = { crop: 'limit', width: 200, height: 200, radius:
 
 // Autoload el quiz asociado a :quizId
 exports.load = function(req, res, next, quizId) {
-	models.Quiz.findById(quizId, { include: [ models.Comment, models.Attachment ] })
+	models.Quiz.findById(quizId, {attributes: ['id', 'question', 'answer', 'AuthorId'], include: [ 
+                                      {model: models.Comment, include: [ 
+                                            {model: models.User, as: 'Author', attributes: ['username']} ]}, 
+                                      models.Attachment ] })
 		.then(function(quiz) {
 			if (quiz) {
 				req.quiz = quiz;
@@ -53,7 +56,7 @@ exports.ownershipRequired = function(req, res, next){
 exports.index = function(req, res, next) {
 	var searchText = req.query.search;
 	if(!searchText) { // Decidir si buscar texto o simplemente servir listado completo de preguntas
-		models.Quiz.findAll({ include: [ models.Attachment ] })
+		models.Quiz.findAll({ include: [models.Attachment, {model: models.User, as: 'Author', attributes: ['username']}] })
 			.then(function(quizzes) {
 				if(req.format === 'json') { 			// Comprobamos si es una petición de formato json
 				   var string = '';				// Si es Json
@@ -71,7 +74,8 @@ exports.index = function(req, res, next) {
 	} else {
 		searchText = '%' + searchText + '%'; // Delimitamos con % por delante y por detrás
 		searchText = searchText.replace(/\s/g, '%'); // Cambiamos espacios en blanco por %		
-		models.Quiz.findAll({where: ["question like ?", searchText], include: [ models.Attachment ]})
+
+		models.Quiz.findAll({where: ["question like ?", searchText], include: [models.Attachment, {model: models.User, as: 'Author', attributes: ['username']}] })
 			.then(function(quizzes) {
 				if(req.format === 'json') { 			// Comprobamos si es una petición de formato json
 				   var string = '';				// Si es Json
@@ -92,12 +96,12 @@ exports.index = function(req, res, next) {
 
 // GET /quizzes/:id
 exports.show = function(req, res, next) {
-	if(req.format === 'json') {
+	if(req.format === 'json') { 
 	   res.send(JSON.stringify(req.quiz));
 	} else {
 	   var answer = req.query.answer || '';
 	   res.render('quizzes/show', { quiz:   req.quiz,
-	        		        answer: answer});
+					answer: answer});
 	}
 };
 
@@ -129,7 +133,7 @@ exports.create = function(req, res, next) {
 	var authorId = req.session.user && req.session.user.id || 0;
 	var quiz = models.Quiz.build({ question: req.body.quiz.question, 
   	                               answer:   req.body.quiz.answer,
-				       AuthorId: authorId } );
+				       AuthorId: authorId });
 
 	// guarda en BD los campos pregunta y respuesta de quiz
 	quiz.save({fields: ["question", "answer", "AuthorId"]})
