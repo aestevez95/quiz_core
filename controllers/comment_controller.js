@@ -5,7 +5,7 @@ var Sequelize = require('sequelize');
 
 // Autoload el comentario asociado a :commentId
 exports.load = function(req, res, next, commentId) {
-  models.Comment.findById(commentId, { include: [ models.User ] })
+  models.Comment.findById(commentId)
       .then(function(comment) {
           if (comment) {
             req.comment = comment;
