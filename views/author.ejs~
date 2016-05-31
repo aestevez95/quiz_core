@@ -2,7 +2,7 @@
  Autor de la página: Manuel Antonio Estévez Rodríguez
 </p>
 
-<img src="/images/autor.jpeg" width="250px"/>
+<img src="/images/autor.jpeg" width="250px" align="middle"/>
 
 <p>
  (Basado en el proyecto CORE-UPM/quiz_2016)
