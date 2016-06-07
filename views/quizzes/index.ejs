@@ -26,10 +26,18 @@
         </td>
 
 	<td>
-	   Valoración: <%= quizzes[i].ranking %> Votos: <%= quizzes[i].votos %> 
+	   Valoración: <% if(quizzes[i].ranking === 0 || quizzes[i].votos === 0) { %> 
+			    0 
+			<% } else { %> 
+			    <%= quizzes[i].ranking/quizzes[i].votos %>
+			<% } %>
+	   &nbsp 
+	   (<%= quizzes[i].votos %> votos)   
+	   &nbsp&nbsp&nbsp 
 	</td>
 
         <% if (session.user) { %>
+	<td> Valorar: </td>
 	<td>
            <form method="get" action="/quizzes/<%= quizzes[i].id %>/valorar">        
               	<select name="valoracion">
@@ -39,7 +47,7 @@
   		  <option value="4">4</option>
 		  <option value="5">5</option>
 		</select>
-              <input type="submit" value="Enviar mi valoración">
+              <input type="submit" value="Enviar valoración">
            </form>
         </td>
            <% if (session.user.isAdmin || session.user.id === quizzes[i].AuthorId) { %>

@@ -178,7 +178,7 @@ exports.edit = function(req, res, next) {
 
 // GET /quizzes/:id/valorar
 exports.valorar = function(req, res, next) {
-	var valoracion = req.query.valoracion || "";
+	var valoracion = req.query.valoracion || 0; // Si no hay valoración, ha habido un error. 	Que no sume nada y no aumente contador 
 	req.quiz.ranking = req.quiz.ranking || 0;
 	req.quiz.votos = req.quiz.votos || 0;
 	   
@@ -186,6 +186,8 @@ exports.valorar = function(req, res, next) {
 	
 	req.quiz.ranking = req.quiz.ranking + valoracion; // Se suma valoración actual para después hacer la media
 	req.quiz.votos++; // Se incrementa el número de votos
+
+	console.log('Ranking: ' + req.quiz.ranking + ', votos: ' + req.quiz.votos);
 
 	req.quiz.save({fields: ["ranking", "votos"]}) // Guardamos nueva valoración y nuevo número de votos 
 	    .then(function(quiz) {
@@ -198,8 +200,6 @@ exports.valorar = function(req, res, next) {
 	       req.flash('error', 'Error al guardar valoración.' + error.message);
 	       next(error);
 	    });
-
-	res.redirect("/quizzes"); // Redirección HTTP a lista de preguntas.
 };
 
 
