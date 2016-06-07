@@ -60,6 +60,9 @@ router.put('/quizzes/:quizId(\\d+)', 		sessionController.loginRequired,
 router.delete('/quizzes/:quizId(\\d+)', 	sessionController.loginRequired, 
 						quizController.ownershipRequired,						
 						quizController.destroy); // Borrar un quiz (delete)
+router.get('/quizzes/:quizId(\\d+)/valorar', 	sessionController.loginRequired,
+						quizController.valorar); // Valorar un quiz (get)
+
 
 // Definición de rutas de los comentarios
 router.get('/quizzes/:quizId(\\d+)/comments/new',     sessionController.loginRequired, 

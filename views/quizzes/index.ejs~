@@ -26,7 +26,7 @@
         </td>
 
 	<td>
-	   Valoración: <%= quizzes[i].ranking %> Votos: <%= quizzes[i].votos %> 
+	   Valoración: <%= quizzes[i].AuthorId %> Votos: <%= quizzes[i].votos %> 
 	</td>
 
         <% if (session.user) { %>
