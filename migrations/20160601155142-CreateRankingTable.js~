@@ -1,0 +1,36 @@
+'use strict';
+
+module.exports = {
+  up: function (queryInterface, Sequelize) {
+    return queryInterface.createTable('Ranking', 
+              { id: { type: Sequelize.INTEGER,	// Añado primary key por si hiciése falta en el futuro
+                      allowNull: false,
+                      primaryKey: true,
+                      autoIncrement: true,
+                      unique: true },
+                valoracion: { type: Sequelize.INTEGER },
+                password: { type: Sequelize.STRING,
+                            validate: { notEmpty: {msg: "Falta password"}} },
+                salt: { type: Sequelize.STRING },
+                isAdmin: { type: Sequelize.BOOLEAN,
+                           defaultValue: false },
+                createdAt: { type: Sequelize.DATE,
+                             allowNull: false },
+                updatedAt: { type: Sequelize.DATE,
+                             allowNull: false }
+              },
+              { sync: {force:true}
+              }
+      );
+  },
+
+  down: function (queryInterface, Sequelize) {
+    /*
+      Add reverting commands here.
+      Return a promise to correctly handle asynchronicity.
+
+      Example:
+      return queryInterface.dropTable('users');
+    */
+  }
+};

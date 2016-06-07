@@ -7,8 +7,6 @@ module.exports = function(sequelize, DataTypes) {
 					    },
 				  answer: { type: DataTypes.STRING,
 					    validate: { notEmpty: {msg: "Falta Respuesta"}}
-				            },
-				  ranking: { type: DataTypes.INTEGER },
-				  votos: { type: DataTypes.INTEGER }
+				            }
 				});
 };

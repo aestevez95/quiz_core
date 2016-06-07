@@ -30,8 +30,7 @@
 			    0 
 			<% } else { %> 
 			    <%= quizzes[i].ranking/quizzes[i].votos %>
-			<% } %>
-	   &nbsp 
+			<% } %> 
 	   (<%= quizzes[i].votos %> votos)   
 	   &nbsp&nbsp&nbsp 
 	</td>
