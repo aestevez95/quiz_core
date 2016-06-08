@@ -100,7 +100,7 @@ exports.show = function(req, res, next) {
 	} else {
 	   var answer = req.query.answer || '';
 	   res.render('quizzes/show', { quiz:   req.quiz,
-					answer: answer});
+					answer: answer });
 	}
 };
 
@@ -178,7 +178,7 @@ exports.edit = function(req, res, next) {
 
 // GET /quizzes/:id/valorar
 exports.valorar = function(req, res, next) {
-	var valoracion = req.query.valoracion || 0; // Si no hay valoración, ha habido un error. 	Que no sume nada y no aumente contador 
+	var valoracion = parseInt(req.query.valoracion) || 0; // Si no hay valoración, ha habido un error. 
 	req.quiz.ranking = req.quiz.ranking || 0;
 	req.quiz.votos = req.quiz.votos || 0;
 	   
